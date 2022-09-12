@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+    <title>HANGMAN - THE GAME </title>
+
+    <style>
+        
+        h1 {
+
+            text-shadow: 0 0 10px gray;
+            background: -webkit-radial-gradient(rgb(81, 53, 112), rgb(202, 179, 211));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 55px;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+
+        #subtitle {
+            text-align: center;
+            color: whitesmoke;
+            text-shadow: 0 0 10px gray;
+            font-style: italic;
+            font-size: 20px;
+
+        }
+
+        body {
+            background-image: url('https://wallpaperaccess.com/full/4112516.jpg');
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+
+        }
+
+
+        #guess {
+            text-align: center;
+            font-size: 30px;
+            text-shadow: 0 0 2px rgb(54, 52, 52);
+            letter-spacing: 5px;
+        }
+
+
+        button {
+            color: rgb(21, 22, 22);
+            background-color: rgb(151, 180, 214);
+            margin: 2px 2px 5px 2px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
+                'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        img {
+            width: 50%;
+            position: relative;
+            padding: 0 15px;
+            left: 25%;
+
+        }
+
+        #game {
+            display: flex;
+        }
+
+
+        svg {
+            margin: 0 auto;
+            background-color: rgb(155, 146, 164);
+            border: 5px solid rgb(71, 30, 90);
+            border-radius: 15px;
+        }
+
+
+        line {
+            stroke: rgb(255, 255, 255);
+            stroke-width: 2;
+        }
+
+        #door1 {
+            transform-origin: 0% 100%;
+        }
+
+        #door2 {
+            transform-origin: 100% 100%;
+        }
+
+        f .hide {
+            visibility: hidden;
+        }
+
+        #hangman {
+            position: relative;
+            right: -32%;
+        }
+           
+        #animate {
+            position: relative;
+            right: -45%;
+        }
+
+        .btn {
+            background-color: rgb(174, 159, 203);
+            position: relative;
+            left: 2%;
+            width: 10%;
+
+        }
+
+
+        #lives1 {
+            position: relative;
+            left: 50%;
+            font-size: 30px;
+            right: 15%;
+            color: rgb(239, 77, 150);
+            text-shadow: 0 0 5px;
+        }
+
+        #hint {
+            position: relative;
+            left: 48%;
+        }
+
+        .game {
+            justify-content: baseline;
+        }
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <div class="game">
+    <h1>HANGMAN GAME </h1>
+    <p id="subtitle">Find out the word and try not to fail!
+    </p>
+    <div>
+        <button class="btn">A</button>
+        <button class="btn">B</button>
+        <button class="btn">C</button>
+        <button class="btn">D</button>
+        <button class="btn">E</button>
+        <button class="btn">F</button>
+        <button class="btn">G</button>
+        <button class="btn">H</button>
+        <button class="btn">I</button>
+        <button class="btn">K</button>
+        <button class="btn">L</button>
+        <button class="btn">M</button>
+        <button class="btn">N</button>
+        <button class="btn">O</button>
+        <button class="btn">P</button>
+        <button class="btn">Q</button>
+        <button class="btn">R</button>
+        <button class="btn">S</button>
+        <button class="btn">T</button>
+        <button class="btn">U</button>
+        <button class="btn">V</button>
+        <button class="btn">W</button>
+        <button class="btn">X</button>
+        <button class="btn">Y</button>
+        <button class="btn">Z</button>
+
+    </div>
+
+
+    </div>
+    <div id="guess">
+        Click on a letter.
+        
+    </div>
+    <p id="lives1">♥ </p>
+          
+
+
+
+
+
+<div id="hangman">
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script        src="//cdn.jsdelivr.net/velocity/1.5/velocity.min.js"></script>
+  <svg height="300" width="440">
+    <g id="body">
+      <g id="head">
+      <circle cx="200" cy="80" r="20" stroke="black" stroke-width="2" fill="white"/>
+        <g id="rEyes">
+        <circle cx="193" cy="80" r="4"/>
+        <circle cx="207" cy="80" r="4"/>
+        </g>
+        <g id="xEyes" class="hide">
+          <line x1="190" y1="78" x2="196" y2="84"/>
+          <line x1="204" y1="78" x2="210" y2="84"/>
+          <line x1="190" y1="84" x2="196" y2="78"/>
+          <line x1="204" y1="84" x2="210" y2="78"/>
+        </g>
+      </g>
+      <line x1="200" y1="100" x2="200" y2="150" />
+      <line id="armL" x1="200" y1="120" x2="170" y2="140" />
+      <line id="armR" x1="200" y1="120" x2="230" y2="140" />
+      <line id="legL" x1="200" y1="150" x2="180" y2="190" />
+      <line id="legR" x1="200" y1="150" x2="220" y2="190" />
+    </g>
+      <line x1="10" y1="250" x2="150" y2="250" />
+      <line id="door1" x1="150" y1="250" x2="200" y2="250" />
+      <line  id="door2" x1="200" y1="250" x2="250" y2="250" />
+      <line x1="250" y1="250" x2="390" y2="250" />
+      <line x1="100" y1="250" x2="100" y2="20" />
+      <line x1="100" y1="20" x2="200" y2="20" />
+      <line id="rope" x1="200" y1="20" x2="200" y2="60" />
+    </svg>
+</div>
+
+
+<button id="hint">Hint</button>
+</div>
+</body>
+<script>
+
+    const words = [
+        'LEGO',
+        'Games',
+        'Ocean',
+        'Sea',
+        'Nature',
+        'Books',
+        "Queen",
+        'Travelling',
+        'Cat',
+        'Dog',
+        'Blue',
+        'Pink',
+        'Water',
+        'Yoda',
+        'Barbie',
+        "Scorpions"
+    ]
+
+
+    // svg del muñeco
+    var word = words[Math.floor(Math.random() * words.length)];
+    var letter = '';
+    var lives = 6;
+    var win = 0;
+    var guesses = [];
+    var p = document.getElementById('guess');
+    var v = document.getElementById('lives1');
+    var head = document.getElementById('head');
+
+
+    for (let i = 0; i < word.length; i++) {
+        p.innerHTML += '_'
+    }
+    
+    v.innerHTML += lives;
+    const letters = document.getElementsByClassName('btn');
+    
+
+
+    function game() {
+
+        p.innerHTML = "";
+        let counter = 0;
+        letter = this.innerHTML;
+
+        
+        console.log("You've clicked on the key " + letter);
+
+
+
+        for (let i = 0; i < word.length; i++) {
+
+            if (word[i].toLowerCase() == letter.toLowerCase()) {
+
+                counter++;
+                win++;
+                guesses[i] = letter;
+
+            } else {
+
+                if (!guesses[i]) {
+                    guesses[i] = '_';
+
+                }
+
+            }
+        }
+
+        p.innerHTML = guesses.join('');
+
+        if (counter > 0) {
+
+            this.style.backgroundColor = "green";
+        }
+        else {
+            this.style.backgroundColor = "red";
+            dropBody();
+            lives--;
+        }
+
+        v.innerHTML = lives;
+        this.disabled = true;
+
+        if (win == guesses.length) {
+
+            setTimeout(() => {
+                if (confirm("You lost! The answer was " + word + ". Would you like to try again?")) {
+                    location.reload();
+                }
+            }, 100);
+        }
+
+        if (lives == 5) {
+            fall1();
+
+        }
+
+        if (lives == 3) {
+            fall();
+            
+
+        }
+
+        if (lives == 2) {
+            dropBody();
+            
+        }
+
+        if (lives == 0) {
+            setTimeout(() => {
+                if (confirm("You lost! The answer was " + word + ". Would you like to try again?")) {
+
+                    location.reload();
+                    finish();
+            
+
+                }
+            }, 100);
+
+        }
+
+    }
+
+
+    function dropBody() {
+        $("#door1").velocity({ rotateZ: 90 }, 1000);
+        $("#door2").velocity({ rotateZ: -90 }, 1000);
+        fall();
+    }
+
+
+    function fall() {
+        let dur = 500;
+        let del = 1000;
+        $("#body").velocity({ translateY: "200px" }, { duration: dur, delay: del });
+        $("#rope").velocity({ y2: "+=200px" }, { duration: dur, delay: del });
+       
+
+        finish();
+    }
+
+    function fall1() {
+        $("#armL").velocity({ y2: "-=60px" }, { duration: dur, delay: del });
+        $("#armR").velocity({ y2: "-=60px" }, { duration: dur, delay: del });
+    }
+
+    function finish() {
+        $("#armL").velocity({ y2: "+=70px", x2: "+=10px" }, 500);
+        $("#armR").velocity({ y2: "+=70px", x2: "-=10px" }, 500);
+    }
+
+
+
+    for (let i = 0; i < letters.length; i++) {
+        letters[i].addEventListener('click', game)
+      
+}
+
+
+
+</script>
+
+</html>
